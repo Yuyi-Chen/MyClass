@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_item_backlog"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="20dp">
+
+    <ImageView
+        android:id="@+id/iv_backlog_type"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_notice"/>
+
+    <TextView
+        android:id="@+id/tv_notice_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toLeftOf="@+id/iv_backlog_type"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:textSize="19sp"
+        android:textColor="@color/white"
+        tools:text="关于开设第六期《SIYB创业培训》课程的通知"/>
+
+    <TextView
+        android:id="@+id/tv_notice_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/iv_backlog_type"
+        app:layout_constraintTop_toBottomOf="@+id/tv_notice_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        tools:text="各学院和2021届毕业生：
+    第六期《SIYB创业基础》课程即将开课，培训课程共10天（60学时），"/>
+
+    <TextView
+        android:id="@+id/tv_backlog_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_notice_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        tools:text="2021年4月22日 13:00 发布"/>
+
+    <TextView
+        android:id="@+id/tv_is_read"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_not_read"
+        app:layout_constraintTop_toBottomOf="@id/iv_backlog_type"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        tools:text="未阅读"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
