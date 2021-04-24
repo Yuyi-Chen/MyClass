@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/color_main">
+    <TextView
+        android:id="@+id/tv_fragment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="通知详情"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/ic_back"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fragment_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_bottom_area">
+        <LinearLayout
+            android:id="@+id/ll_imagine_container"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/color_main"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_student_picture"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_classmates_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:layout_toEndOf="@+id/ll_imagine_container"
+            tools:text="杨明"/>
+
+        <TextView
+            android:id="@+id/tv_backlog_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_classmates_name"
+            android:layout_toEndOf="@id/ll_imagine_container"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="2021年4月21日 13:00 发布"/>
+
+        <TextView
+            android:id="@+id/tv_classmates_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/tv_classmates_name"
+            android:layout_marginTop="11dp"
+            android:textColor="@color/white"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/bg_item_backlog"
+            tools:text="班主任"/>
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/tv_backlog_time"
+            android:background="#CBC8C9"/>
+        <TextView
+            android:id="@+id/tv_backlog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:text="关于《软件综合实习》的通知"
+            android:layout_below="@id/view_divider"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_read_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_backlog_title"
+            android:textColor="#898B8D"
+            android:textSize="14sp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            tools:text="9人已读"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tv_read_number"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="70dp">
+            <TextView
+                android:id="@+id/tv_backlog_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:text="通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知通知" />
+        </ScrollView>
+
+        <Button
+            android:id="@+id/bt_read"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_login_button"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="确认通知"
+            android:textSize="21sp"/>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

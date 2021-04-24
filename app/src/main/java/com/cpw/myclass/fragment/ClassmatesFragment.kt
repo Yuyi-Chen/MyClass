@@ -1,5 +1,6 @@
 package com.cpw.myclass.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cpw.myclass.R
+import com.cpw.myclass.activity.ClassmateActivity
 import com.cpw.myclass.adapter.ClassmatesAdapter
 import com.cpw.myclass.data.ClassmatesBean
 import com.cpw.myclass.data.ClassmatesType
@@ -60,6 +62,13 @@ class ClassmatesFragment : Fragment() {
         mView.mSideBar.setTextView(mView.tv_show_side)
         resetData(classmatesList)
         val adapter = ClassmatesAdapter(classmatesList)
+        adapter.setClickListener(object : ClassmatesAdapter.OnClassmateItemClickListener{
+            override fun onClick(classmate: ClassmatesBean) {
+                val intent = Intent(activity, ClassmateActivity::class.java)
+                intent.putExtra("classmate", classmate)
+                startActivity(intent)
+            }
+        })
         mView.mSideBar.setOnTouchingLetterChangedListener(object : SideBar.OnTouchingLetterChangedListener{
             override fun onTouchingLetterChanged(s: String?) {
                 positions[s?.get(0)]?.let { mView.rv_classmates_list.scrollToPosition(it) }

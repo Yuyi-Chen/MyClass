@@ -11,6 +11,7 @@ import com.cpw.myclass.data.ClassmatesBean
 import com.cpw.myclass.data.ClassmatesType
 
 class ClassmatesAdapter(private val values: List<ClassmatesBean>) : RecyclerView.Adapter<ClassmatesAdapter.ViewHolder>() {
+    var listener: OnClassmateItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -37,15 +38,29 @@ class ClassmatesAdapter(private val values: List<ClassmatesBean>) : RecyclerView
             ClassmatesType.StudyMonitor -> "学习委员"
             ClassmatesType.ViceMonitor -> "副班长"
         }
+        if (listener != null) {
+            holder.item.setOnClickListener {
+                listener!!.onClick(item)
+            }
+        }
     }
 
     override fun getItemCount(): Int = values.size
 
+    fun setClickListener(listener: OnClassmateItemClickListener) {
+        this.listener = listener
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val item = view
         val codeView: TextView = view.findViewById(R.id.tv_code)
         val codeViewContainer: LinearLayout = view.findViewById(R.id.ll_code_container)
         val nameView: TextView = view.findViewById(R.id.tv_classmates_name)
         val numberView: TextView = view.findViewById(R.id.tv_classmates_phone_number)
         val typeView: TextView = view.findViewById(R.id.tv_classmates_type)
+    }
+
+    interface OnClassmateItemClickListener{
+        fun onClick(classmate: ClassmatesBean)
     }
 }

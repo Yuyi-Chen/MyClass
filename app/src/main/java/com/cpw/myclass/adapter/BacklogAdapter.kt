@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cpw.myclass.R
 
 class BacklogAdapter() : RecyclerView.Adapter<BacklogAdapter.ViewHolder>() {
+    var listener: OnBacklogItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -20,14 +21,28 @@ class BacklogAdapter() : RecyclerView.Adapter<BacklogAdapter.ViewHolder>() {
         holder.backlogContentView.text = "我快写完了啊啊啊啊啊 啊啊"
         holder.backlogTimeView.text = "2021年4月22日 16:56 发布"
         holder.isReadView.text = "未阅读"
+        if (listener != null) {
+            holder.item.setOnClickListener {
+                listener!!.onClick()
+            }
+        }
     }
 
     override fun getItemCount(): Int = 10
 
+    fun setClickListener(listener: OnBacklogItemClickListener) {
+        this.listener = listener
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val item = view
         val backlogTitleView: TextView = view.findViewById(R.id.tv_notice_title)
         val backlogContentView: TextView = view.findViewById(R.id.tv_notice_content)
         val backlogTimeView: TextView = view.findViewById(R.id.tv_backlog_time)
         val isReadView: TextView = view.findViewById(R.id.tv_is_read)
+    }
+
+    interface OnBacklogItemClickListener {
+        fun onClick()
     }
 }

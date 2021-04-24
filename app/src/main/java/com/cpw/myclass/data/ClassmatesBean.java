@@ -1,6 +1,8 @@
 package com.cpw.myclass.data;
 
-public class ClassmatesBean {
+import java.io.Serializable;
+
+public class ClassmatesBean implements Serializable {
     public String name;
     public String phone_number;
     public String student_number;

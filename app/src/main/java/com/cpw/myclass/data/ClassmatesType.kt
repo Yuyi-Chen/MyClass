@@ -1,6 +1,6 @@
 package com.cpw.myclass.data
 
-enum class ClassmatesType(i: Int) {
+enum class ClassmatesType(i: Int){
     Schoolmate(0),
     Monitor(1),
     ViceMonitor(2),
