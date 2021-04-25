@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cpw.myclass">
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_class_icon"
@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".activity.ClassmateActivity"></activity>
+        <activity android:name=".activity.NewsActivity"></activity>
+        <activity android:name=".activity.ClassmateActivity" />
         <activity android:name=".activity.BacklogActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.SplashActivity">

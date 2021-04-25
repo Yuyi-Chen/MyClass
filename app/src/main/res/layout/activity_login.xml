@@ -39,6 +39,7 @@
                     android:layout_height="30dp"
                     android:src="@drawable/ic_user"/>
                 <EditText
+                    android:id="@+id/et_student_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -65,6 +66,7 @@
                     android:layout_height="30dp"
                     android:src="@drawable/ic_password"/>
                 <EditText
+                    android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -96,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
                 <TextView
+                    android:id="@+id/tv_forget_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
@@ -104,6 +107,7 @@
                     android:layout_alignParentEnd="true"/>
 
                 <CheckBox
+                    android:id="@+id/cb_remember_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"

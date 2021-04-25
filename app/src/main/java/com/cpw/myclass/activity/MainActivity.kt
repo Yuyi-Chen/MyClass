@@ -1,12 +1,18 @@
 package com.cpw.myclass.activity
 
+import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.cpw.myclass.R
 import com.cpw.myclass.fragment.BacklogFragment
 import com.cpw.myclass.fragment.ClassmatesFragment
@@ -72,6 +78,34 @@ class MainActivity : AppCompatActivity() {
         mFragments[position]?.let {
             supportFragmentManager.beginTransaction().replace(R.id.home_container, it).commit()
         }
+    }
+
+    override fun onBackPressed() {
+        val mDialog = Dialog(this, R.style.BottomDialog)
+        val root = LayoutInflater.from(this).inflate(R.layout.bottom_menu, null) as ConstraintLayout
+        root.findViewById<TextView>(R.id.tv_menu_content).text = "确定要退出软件吗？"
+        root.findViewById<Button>(R.id.bt_yes).let {
+            it.text = "退出"
+            it.setOnClickListener {
+                super.onBackPressed()
+            }
+        }
+        root.findViewById<Button>(R.id.bt_no).let {
+            it.text = "取消"
+            it.setOnClickListener {
+                mDialog.dismiss()
+            }
+        }
+        mDialog.setContentView(root)
+        val dialogWindow = mDialog.window
+        dialogWindow?.setGravity(Gravity.BOTTOM)
+        val lp = dialogWindow!!.attributes // 获取对话框当前的参数值
+        lp.width = resources.displayMetrics.widthPixels // 宽度
+        root.measure(0, 0)
+        lp.height = root.measuredHeight
+        lp.alpha = 9f // 透明度
+        dialogWindow.attributes = lp
+        mDialog.show()
     }
 
     private fun getTabView(context: Context, position: Int) : View {

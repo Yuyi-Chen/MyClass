@@ -1,7 +1,9 @@
 package com.cpw.myclass.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.cpw.myclass.R
 import com.cpw.myclass.data.ClassmatesBean
 import com.cpw.myclass.data.ClassmatesType
@@ -26,6 +28,17 @@ class ClassmateActivity : AppCompatActivity() {
         tv_student_number.text = "学号：${classmate.student_number}"
         iv_back.setOnClickListener {
             finish()
+        }
+        ll_send_message.setOnClickListener {
+            val intent = Intent(this, NewsActivity::class.java)
+            intent.putExtra("name", classmate.name)
+            startActivity(intent)
+        }
+        ll_call.setOnClickListener {
+            val intent = Intent(Intent.ACTION_DIAL)
+            val data: Uri = Uri.parse("tel:${classmate.phone_number}")
+            intent.data = data
+            startActivity(intent)
         }
     }
 }
