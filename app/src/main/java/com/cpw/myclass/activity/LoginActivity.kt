@@ -5,9 +5,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import com.cpw.myclass.R
+import com.cpw.myclass.http.MyCallback
+import com.cpw.myclass.http.OkHttpManager
+import com.cpw.myclass.http.RequestUrl
 import kotlinx.android.synthetic.main.activity_login.*
+import okhttp3.Request
+import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +49,47 @@ class LoginActivity : AppCompatActivity() {
                 editor.putString("password", "")
             }
             editor.apply()
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+//            OkHttpManager.instance?.get("https://www.baidu.com/", object : MyCallback{
+//                override fun onSuccess(json: String) {
+//                    Log.d("http_test", "success: $json")
+//                }
+//
+//                override fun onBefore(request: Request) {
+//                    Log.d("http_test", "will start")
+//                }
+//
+//                override fun onAfter() {
+//                    Log.d("http_test", "end")
+//                }
+//
+//                override fun onFailed(e: IOException) {
+//                    Log.d("http_test", "failed: ${e.message}")
+//                }
+//
+//            })
+            val param = HashMap<String, String>()
+            param["username"] = "love"
+            param["password"] = "1231"
+            OkHttpManager.instance?.post(RequestUrl.login, param, object : MyCallback{
+                override fun onSuccess(json: String) {
+                    Log.d("http_test", "success: $json")
+                }
+
+                override fun onBefore(request: Request) {
+                    Log.d("http_test", "will start")
+                }
+
+                override fun onAfter() {
+                    Log.d("http_test", "end")
+                }
+
+                override fun onFailed(e: IOException) {
+                    Log.d("http_test", "failed: ${e.message}")
+                }
+
+            })
+//            startActivity(Intent(this, MainActivity::class.java))
+//            finish()
         }
     }
 }

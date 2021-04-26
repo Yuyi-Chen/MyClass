@@ -54,6 +54,9 @@ class BacklogFragment : Fragment() {
 
         })
         view.rv_backlog_list.adapter = adapter
+        view.iv_add.setOnClickListener {
+
+        }
         adapter.notifyDataSetChanged()
         return view
     }

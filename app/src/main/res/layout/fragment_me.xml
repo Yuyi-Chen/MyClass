@@ -93,6 +93,31 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
             <ImageView
+                android:id="@+id/iv_add_student"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_add_student"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:layout_toRightOf="@id/iv_add_student"
+                android:layout_marginLeft="10dp"
+                android:text="添加学生"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_right_arrow"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+            <ImageView
                 android:id="@+id/iv_about"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -161,6 +186,7 @@
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_right_arrow"/>
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
