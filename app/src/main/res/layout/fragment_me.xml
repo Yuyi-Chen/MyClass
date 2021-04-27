@@ -63,6 +63,7 @@
         android:divider="@drawable/shape_divider_line"
         android:showDividers="middle">
         <RelativeLayout
+            android:id="@+id/rl_change_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
@@ -88,6 +89,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_add_student"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
@@ -113,6 +115,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_about_app"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
@@ -138,6 +141,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
@@ -163,6 +167,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_quit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"

@@ -47,28 +47,6 @@ class OkHttpManager private constructor() {
     }
 
     /**
-     * 上传文件+文本
-     *
-     * @param url
-     * @param parms
-     * @param callBack
-     */
-    fun postMultiPart(
-        url: String,
-        parms: Map<String, String>,
-        callBack: MyCallback
-    ) {
-        /**
-         * 通过url和POST方式构建Request
-         */
-        val request: Request = bulidRequestForPostByForm(url, parms, true)
-        /**
-         * 请求网络的逻辑
-         */
-        requestNetWork(request, callBack)
-    }
-
-    /**
      * 对外提供的Post方法访问
      *
      * @param url
@@ -83,7 +61,7 @@ class OkHttpManager private constructor() {
         /**
          * 通过url和POST方式构建Request
          */
-        val request: Request = bulidRequestForPostByForm(url, parms as Map<String, String>, false)
+        val request: Request = bulidRequestForPostByForm(url, parms as Map<String, String>)
         /**
          * 请求网络的逻辑
          */
@@ -99,52 +77,24 @@ class OkHttpManager private constructor() {
      */
     private fun bulidRequestForPostByForm(
         url: String,
-        parms: Map<*, *>,
-        isMultiPart: Boolean
+        parms: Map<*, *>
     ): Request {
         var body: RequestBody? = null
-        if (isMultiPart) {
-            var builder = MultipartBody.Builder().setType(MultipartBody.FORM)
-            builder = initBuilder(parms, builder)
-            body = builder.build()
-        } else {
-            var builder = FormBody.Builder()
-            builder = initBuilder(parms, builder)
-            body = builder.build()
+        var builder = FormBody.Builder()
+        builder = initBuilder(parms, builder)
+        body = builder.build()
+        var lastUrl = url
+        if (parms.isNotEmpty()) {
+            lastUrl += '?'
+            for (key in parms) {
+                lastUrl = lastUrl + key.key + '=' + key.value + '&'
+            }
+            lastUrl = lastUrl.substring(0, lastUrl.length - 1)
         }
         return Request.Builder()
-            .url(url)
+            .url(lastUrl)
             .post(body)
             .build()
-    }
-
-    private fun initBuilder(
-        parms: Map<*, *>?,
-        builder: MultipartBody.Builder
-    ): MultipartBody.Builder {
-        builder.addFormDataPart("os", "android")
-        builder.addFormDataPart("brand", Build.MODEL)
-        builder.addFormDataPart("os_version", Build.VERSION.RELEASE)
-        builder.addFormDataPart("lng", "0.0")
-        builder.addFormDataPart("lat", "0.0")
-        if (parms != null) {
-            for ((key, value) in parms) {
-                if (value is String) {
-                    builder.addFormDataPart(
-                        key as String,
-                        value
-                    )
-                } else if (value is File) {
-                    val file: File = value as File
-                    builder.addFormDataPart(
-                        key as String,
-                        file.name,
-                        RequestBody.create(null, file)
-                    )
-                }
-            }
-        }
-        return builder
     }
 
     private fun initBuilder(
@@ -164,39 +114,6 @@ class OkHttpManager private constructor() {
             }
         }
         return builder
-    }
-
-    /**
-     * 对外提供的Post方法访问
-     *
-     * @param url
-     * @param json:    提交内容为json数据
-     * @param callBack
-     */
-    fun post(url: String, json: String, callBack: MyCallback) {
-        /**
-         * 通过url和POST方式构建Request
-         */
-        val request: Request = bulidRequestForPostByJson(url, json)
-        /**
-         * 请求网络的逻辑
-         */
-        requestNetWork(request, callBack)
-    }
-
-    /**
-     * POST方式构建Request {json}
-     *
-     * @param url
-     * @param json
-     * @return
-     */
-    private fun bulidRequestForPostByJson(url: String, json: String): Request {
-        val body = RequestBody.create(JSON, json)
-        return Request.Builder()
-            .url(url)
-            .post(body)
-            .build()
     }
 
     private fun requestNetWork(request: Request, callBack: MyCallback) {

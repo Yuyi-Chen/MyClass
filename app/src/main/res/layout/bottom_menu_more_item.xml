@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_bottom_menu"
+    android:layout_marginBottom="20dp"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/tv_menu_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        tools:text="是否需要导航？"/>
+
+    <Button
+        android:id="@+id/bt_1"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/bg_menu_item_green"
+        app:layout_constraintTop_toBottomOf="@id/tv_menu_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:textColor="@color/color_main"
+        android:textSize="17sp"
+        tools:text="是"/>
+
+    <Button
+        android:id="@+id/bt_2"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/bg_menu_item_green"
+        app:layout_constraintTop_toBottomOf="@id/bt_1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:textColor="@color/color_main"
+        android:textSize="17sp"
+        tools:text="否"/>
+
+    <Button
+        android:id="@+id/bt_3"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/bg_menu_item_green"
+        app:layout_constraintTop_toBottomOf="@id/bt_2"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:textColor="@color/color_main"
+        android:textSize="17sp"
+        tools:text="否"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -49,24 +49,6 @@ class LoginActivity : AppCompatActivity() {
                 editor.putString("password", "")
             }
             editor.apply()
-//            OkHttpManager.instance?.get("https://www.baidu.com/", object : MyCallback{
-//                override fun onSuccess(json: String) {
-//                    Log.d("http_test", "success: $json")
-//                }
-//
-//                override fun onBefore(request: Request) {
-//                    Log.d("http_test", "will start")
-//                }
-//
-//                override fun onAfter() {
-//                    Log.d("http_test", "end")
-//                }
-//
-//                override fun onFailed(e: IOException) {
-//                    Log.d("http_test", "failed: ${e.message}")
-//                }
-//
-//            })
             val param = HashMap<String, String>()
             param["username"] = "love"
             param["password"] = "1231"
@@ -88,8 +70,8 @@ class LoginActivity : AppCompatActivity() {
                 }
 
             })
-//            startActivity(Intent(this, MainActivity::class.java))
-//            finish()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 }

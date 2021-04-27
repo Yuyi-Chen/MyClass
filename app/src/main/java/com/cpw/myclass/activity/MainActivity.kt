@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val mTabRes = arrayOf(R.drawable.ic_backlog_normal, R.drawable.ic_classmates_normal, R.drawable.ic_news_normal, R.drawable.ic_me_normal)
     private val mTabResPressed = arrayOf(R.drawable.ic_backlog_pressed, R.drawable.ic_classmates_pressed, R.drawable.ic_news_pressed, R.drawable.ic_me_pressed)
     private val mTabTitle = arrayOf("待办", "同学", "消息", "我的")
-    private val mFragments = arrayOf(BacklogFragment.newInstance("", ""), ClassmatesFragment.newInstance("", ""), NewsFragment.newInstance(1), MeFragment.newInstance("", ""))
+    private val mFragments = arrayOf(BacklogFragment.newInstance(), ClassmatesFragment.newInstance("", ""), NewsFragment.newInstance(1), MeFragment.newInstance("", ""))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

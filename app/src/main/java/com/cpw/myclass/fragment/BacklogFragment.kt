@@ -1,11 +1,16 @@
 package com.cpw.myclass.fragment
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cpw.myclass.R
 import com.cpw.myclass.activity.BacklogActivity
@@ -13,24 +18,7 @@ import com.cpw.myclass.adapter.BacklogAdapter
 import com.cpw.myclass.data.BacklogBean
 import kotlinx.android.synthetic.main.fragment_backlog.view.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [BacklogFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class BacklogFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_backlog, container, false)
@@ -55,29 +43,43 @@ class BacklogFragment : Fragment() {
         })
         view.rv_backlog_list.adapter = adapter
         view.iv_add.setOnClickListener {
+            val mDialog = activity?.let { it1 -> Dialog(it1, R.style.BottomDialog) }
+            val root = LayoutInflater.from(activity).inflate(R.layout.bottom_menu_more_item, null) as ConstraintLayout
+            root.findViewById<TextView>(R.id.tv_menu_content).visibility = View.GONE
+            root.findViewById<Button>(R.id.bt_1).let {
+                it.text = "发布通知"
+                it.setOnClickListener {
 
+                }
+            }
+            root.findViewById<Button>(R.id.bt_2).let {
+                it.text = "发布投票"
+                it.setOnClickListener {
+                }
+            }
+            root.findViewById<Button>(R.id.bt_3).let {
+                it.text = "发布作业"
+                it.setOnClickListener {
+
+                }
+            }
+            mDialog?.setContentView(root)
+            val dialogWindow = mDialog?.window
+            dialogWindow?.setGravity(Gravity.BOTTOM)
+            val lp = dialogWindow!!.attributes // 获取对话框当前的参数值
+            lp.width = resources.displayMetrics.widthPixels // 宽度
+            root.measure(0, 0)
+            lp.height = root.measuredHeight
+            lp.alpha = 9f // 透明度
+            dialogWindow.attributes = lp
+            mDialog.show()
         }
         adapter.notifyDataSetChanged()
         return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BacklogFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BacklogFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() =
+            BacklogFragment()
     }
 }
