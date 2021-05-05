@@ -10,32 +10,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cpw.myclass.R
 import com.cpw.myclass.activity.BacklogActivity
+import com.cpw.myclass.activity.SendNoticeActivity
 import com.cpw.myclass.adapter.BacklogAdapter
-import com.cpw.myclass.data.BacklogBean
+import com.cpw.myclass.data.NoticeBean
+import com.cpw.myclass.util.CommonUtil
 import kotlinx.android.synthetic.main.fragment_backlog.view.*
+import kotlin.collections.ArrayList
 
 class BacklogFragment : Fragment() {
-
+    private var noticeList = ArrayList<NoticeBean>()
+    private val adapter = BacklogAdapter()
+    private lateinit var mView: View
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_backlog, container, false)
+        mView = view
         view.rv_backlog_list.layoutManager = LinearLayoutManager(activity)
-        val adapter = BacklogAdapter()
         adapter.setClickListener(object : BacklogAdapter.OnBacklogItemClickListener{
-            override fun onClick() {
-                val backlog = BacklogBean()
-                backlog.content = "各学院和2021届毕业生：\n" +
-                        "    第六期《SIYB创业基础》课程即将开课，培训课程共10天（60学时），本期共招收60人（按报名顺序选课，选满即止，满60人开班），仅限2021届毕业生（本硕博均可）参加，培训合格将认定2个创新创业学分，并颁发由人社部和国际劳工组织联合冠名的创业培训合格证，报名截止时间4月15日。"
-                backlog.initiator = "杨明"
-                backlog.initiator_type = "班长"
-                backlog.release_time = "2021年4月24日 15:06"
-                backlog.title = "关于开设第六期《SIYB创业培训》课程的通知"
+            override fun onClick(notice: NoticeBean) {
                 val intent = Intent(activity, BacklogActivity::class.java)
                 val bundle = Bundle()
-                bundle.putSerializable("backlog", backlog)
+                bundle.putSerializable("backlog", notice)
                 intent.putExtras(bundle)
                 startActivity(intent)
             }
@@ -43,24 +42,32 @@ class BacklogFragment : Fragment() {
         })
         view.rv_backlog_list.adapter = adapter
         view.iv_add.setOnClickListener {
+            if (CommonUtil.currentUser.user_role == 6) {
+                Toast.makeText(activity, "您没有此权限", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
             val mDialog = activity?.let { it1 -> Dialog(it1, R.style.BottomDialog) }
             val root = LayoutInflater.from(activity).inflate(R.layout.bottom_menu_more_item, null) as ConstraintLayout
             root.findViewById<TextView>(R.id.tv_menu_content).visibility = View.GONE
             root.findViewById<Button>(R.id.bt_1).let {
                 it.text = "发布通知"
                 it.setOnClickListener {
-
+                    startActivity(Intent(activity, SendNoticeActivity::class.java))
+                    mDialog?.dismiss()
                 }
             }
             root.findViewById<Button>(R.id.bt_2).let {
                 it.text = "发布投票"
                 it.setOnClickListener {
+                    startActivity(Intent(activity, SendNoticeActivity::class.java))
+                    mDialog?.dismiss()
                 }
             }
             root.findViewById<Button>(R.id.bt_3).let {
                 it.text = "发布作业"
                 it.setOnClickListener {
-
+                    startActivity(Intent(activity, SendNoticeActivity::class.java))
+                    mDialog?.dismiss()
                 }
             }
             mDialog?.setContentView(root)
@@ -74,8 +81,16 @@ class BacklogFragment : Fragment() {
             dialogWindow.attributes = lp
             mDialog.show()
         }
+        adapter.setNotice(noticeList)
         adapter.notifyDataSetChanged()
         return view
+    }
+
+    fun setNotice(list: ArrayList<NoticeBean>) {
+        noticeList = list
+        adapter.setNotice(noticeList)
+        mView.rv_backlog_list.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
     companion object {

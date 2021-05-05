@@ -79,20 +79,19 @@ class OkHttpManager private constructor() {
         url: String,
         parms: Map<*, *>
     ): Request {
-        var body: RequestBody? = null
         var builder = FormBody.Builder()
         builder = initBuilder(parms, builder)
-        body = builder.build()
-        var lastUrl = url
-        if (parms.isNotEmpty()) {
-            lastUrl += '?'
-            for (key in parms) {
-                lastUrl = lastUrl + key.key + '=' + key.value + '&'
-            }
-            lastUrl = lastUrl.substring(0, lastUrl.length - 1)
-        }
+        val body = builder.build()
+//        var lastUrl = url
+//        if (parms.isNotEmpty()) {
+//            lastUrl += '?'
+//            for (key in parms) {
+//                lastUrl = lastUrl + key.key + '=' + key.value + '&'
+//            }
+//            lastUrl = lastUrl.substring(0, lastUrl.length - 1)
+//        }
         return Request.Builder()
-            .url(lastUrl)
+            .url(url)
             .post(body)
             .build()
     }
@@ -101,11 +100,6 @@ class OkHttpManager private constructor() {
         parms: Map<*, *>?,
         builder: FormBody.Builder
     ): FormBody.Builder {
-        builder.add("os", "android")
-        builder.add("brand", Build.MODEL)
-        builder.add("os_version", Build.VERSION.RELEASE)
-        builder.add("lng", "0.0")
-        builder.add("lat", "0.0")
         if (parms != null) {
             for ((key, value) in parms) {
                 if (value is String) {

@@ -1,21 +1,31 @@
 package com.cpw.myclass.fragment
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cpw.myclass.R
 import com.cpw.myclass.activity.ClassmateActivity
 import com.cpw.myclass.adapter.ClassmatesAdapter
-import com.cpw.myclass.data.ClassmatesBean
-import com.cpw.myclass.data.ClassmatesType
+import com.cpw.myclass.data.UserBean
+import com.cpw.myclass.http.MyCallback
+import com.cpw.myclass.http.OkHttpManager
+import com.cpw.myclass.http.RequestUrl
+import com.cpw.myclass.util.CommonUtil
 import com.cpw.myclass.view.SideBar
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_classmates.view.*
 import net.sourceforge.pinyin4j.PinyinHelper
+import okhttp3.Request
+import java.io.IOException
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -33,8 +43,9 @@ class ClassmatesFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var mView: View
-    private val classmatesList = arrayListOf<ClassmatesBean>()
+    private var classmatesList = arrayListOf<UserBean>()
     private val positions = HashMap<Char, Int>()
+    private val adapter = ClassmatesAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,28 +53,41 @@ class ClassmatesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        classmatesList.clear()
-        classmatesList.add(ClassmatesBean("杨明", "12312341234", "20171001000", ClassmatesType.ViceMonitor))
-        classmatesList.add(ClassmatesBean("阿杰", "12312341234", "20171001000", ClassmatesType.StudyMonitor))
-        classmatesList.add(ClassmatesBean("不要命", "12312341234", "20171001000", ClassmatesType.SportsMonitor))
-        classmatesList.add(ClassmatesBean("董少", "12312341234", "20171001000", ClassmatesType.Schoolmate))
-        classmatesList.add(ClassmatesBean("董少刷", "12312341234", "20171001000", ClassmatesType.Monitor))
-        classmatesList.add(ClassmatesBean("废物", "12312341234", "20171001000", ClassmatesType.LeagueBranchSecretary))
-        classmatesList.add(ClassmatesBean("废弃物", "12312341234", "20171001000", ClassmatesType.ClassTeacher))
-        classmatesList.add(ClassmatesBean("无翼鸟个", "12312341234", "20171001000", ClassmatesType.Schoolmate))
-        classmatesList.add(ClassmatesBean("爱是两方面", "12331231234", "20171001000", ClassmatesType.Schoolmate))
-        classmatesList.add(ClassmatesBean("拉拉刘", "1231234213", "20171001000", ClassmatesType.Schoolmate))
-        classmatesList.add(ClassmatesBean("四方达麻烦", "12312341234", "20171001000", ClassmatesType.getClassmatesType(1)))
-        classmatesList.add(ClassmatesBean("@看建安费拿到家", "12312341234", "20171001000", ClassmatesType.Schoolmate))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.fragment_classmates, container, false)
         mView.mSideBar.setTextView(mView.tv_show_side)
-        resetData(classmatesList)
-        val adapter = ClassmatesAdapter(classmatesList)
+        val param = java.util.HashMap<String, String>()
+        if (CommonUtil.currentUser != null) {
+            param["class_id"] = CommonUtil.currentUser.class_id
+        }
+        OkHttpManager.instance?.post(RequestUrl.userList, param, object : MyCallback {
+            @RequiresApi(Build.VERSION_CODES.N)
+            override fun onSuccess(json: String) {
+                val gson = Gson()
+                val type = object : TypeToken<ArrayList<UserBean>>(){}.type
+                val result: ArrayList<UserBean> = gson.fromJson(json, type)
+                result.removeIf {
+                    it.user_id == CommonUtil.currentUser.user_id
+                }
+                classmatesList = result
+                resetData(classmatesList)
+                adapter.setClassmates(classmatesList)
+            }
+            override fun onBefore(request: Request) {
+                Log.d("http_test", "will start")
+            }
+            override fun onAfter() {
+                Log.d("http_test", "end")
+            }
+
+            override fun onFailed(e: IOException) {
+                Log.d("http_test", "failed: ${e.message}")
+            }
+        })
         adapter.setClickListener(object : ClassmatesAdapter.OnClassmateItemClickListener{
-            override fun onClick(classmate: ClassmatesBean) {
+            override fun onClick(classmate: UserBean) {
                 val intent = Intent(activity, ClassmateActivity::class.java)
                 intent.putExtra("classmate", classmate)
                 startActivity(intent)
@@ -80,9 +104,9 @@ class ClassmatesFragment : Fragment() {
         return mView
     }
 
-    private fun resetData(data: List<ClassmatesBean>) {
+    private fun resetData(data: List<UserBean>) {
         for (i in data.indices) {
-            val pinyinArray = PinyinHelper.toHanyuPinyinStringArray(data[i].name[0])
+            val pinyinArray = PinyinHelper.toHanyuPinyinStringArray(data[i].user_name[0])
             if (pinyinArray != null) {
                 val s = pinyinArray[0].substring(0, 1).toUpperCase()
                 data[i].firstLetter = s[0]

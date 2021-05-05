@@ -3,18 +3,29 @@ package com.cpw.myclass.fragment
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.cpw.myclass.R
 import com.cpw.myclass.activity.LoginActivity
+import com.cpw.myclass.activity.MainActivity
+import com.cpw.myclass.http.MyCallback
+import com.cpw.myclass.http.OkHttpManager
+import com.cpw.myclass.http.RequestUrl
+import com.cpw.myclass.util.CommonUtil
+import kotlinx.android.synthetic.main.activity_question.*
 import kotlinx.android.synthetic.main.fragment_me.view.*
+import okhttp3.Request
+import java.io.IOException
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,6 +55,14 @@ class MeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_me, container, false)
+        view.tv_user_name.text = CommonUtil.currentUser.user_name
+        view.tv_user_number.text = "学号：${CommonUtil.currentUser.user_id}"
+        view.tv_user_phone.text = "电话：${CommonUtil.currentUser.user_phone}"
+        if (CommonUtil.currentUser.user_role == 0) {
+            view.rl_add_student.visibility = View.VISIBLE
+        } else {
+            view.rl_add_student.visibility = View.GONE
+        }
         view.rl_quit.setOnClickListener {
             val mDialog = activity?.let { it1 -> Dialog(it1, R.style.BottomDialog) }
             val root = LayoutInflater.from(activity).inflate(R.layout.bottom_menu, null) as ConstraintLayout
@@ -82,7 +101,58 @@ class MeFragment : Fragment() {
             root.findViewById<Button>(R.id.bt_1).let {
                 it.text = "单个添加"
                 it.setOnClickListener {
+                    mDialog?.dismiss()
+                    val addDialog = activity?.let { it1 -> Dialog(it1, R.style.BottomDialog) }
+                    val layout = LayoutInflater.from(activity).inflate(R.layout.add_student_dialog, null) as ConstraintLayout
+                    layout.findViewById<Button>(R.id.bt_add).setOnClickListener {
+                        if (TextUtils.isEmpty(layout.findViewById<EditText>(R.id.et_user_name).text.toString())) {
+                            Toast.makeText(activity, "请输入学生姓名", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }
+                        if (TextUtils.isEmpty(layout.findViewById<EditText>(R.id.et_user_id).text.toString())) {
+                            Toast.makeText(activity, "请输入学生学号", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }
+                        if (TextUtils.isEmpty(layout.findViewById<EditText>(R.id.et_user_phone).text.toString())) {
+                            Toast.makeText(activity, "请输入学生电话", Toast.LENGTH_SHORT).show()
+                            return@setOnClickListener
+                        }
+                        val param = HashMap<String, String>()
+                        param["user_name"] = layout.findViewById<EditText>(R.id.et_user_name).text.toString()
+                        param["user_phone"] = layout.findViewById<EditText>(R.id.et_user_phone).text.toString()
+                        param["user_id"] = layout.findViewById<EditText>(R.id.et_user_id).text.toString()
+                        param["class_id"] = CommonUtil.currentUser.user_id
+                        OkHttpManager.instance?.post(RequestUrl.addStudent, param, object :
+                            MyCallback {
+                            override fun onSuccess(json: String) {
+                                addDialog?.dismiss()
+                                Toast.makeText(activity, "添加成功", Toast.LENGTH_SHORT).show()
+                            }
 
+                            override fun onBefore(request: Request) {
+                                Log.d("http_test", "will start")
+                            }
+
+                            override fun onAfter() {
+                                Log.d("http_test", "end")
+                            }
+
+                            override fun onFailed(e: IOException) {
+                                Log.d("http_test", "failed: ${e.message}")
+                                addDialog?.dismiss()
+                            }
+                        })
+                    }
+                    addDialog?.setContentView(layout)
+                    val dialogWindow = addDialog?.window
+                    dialogWindow?.setGravity(Gravity.CENTER)
+                    val lp = dialogWindow!!.attributes // 获取对话框当前的参数值
+                    lp.width = resources.displayMetrics.widthPixels // 宽度
+                    layout.measure(0, 0)
+                    lp.height = layout.measuredHeight
+                    lp.alpha = 9f // 透明度
+                    dialogWindow.attributes = lp
+                    addDialog.show()
                 }
             }
             root.findViewById<Button>(R.id.bt_2).let {

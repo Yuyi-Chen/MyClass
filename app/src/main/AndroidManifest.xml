@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cpw.myclass">
+
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_class_icon"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".activity.NewsActivity"></activity>
+        <activity android:name=".activity.SendNoticeActivity"></activity>
+        <activity android:name=".activity.QuestionActivity" />
+        <activity android:name=".activity.NewsActivity" />
         <activity android:name=".activity.ClassmateActivity" />
         <activity android:name=".activity.BacklogActivity" />
         <activity android:name=".activity.LoginActivity" />

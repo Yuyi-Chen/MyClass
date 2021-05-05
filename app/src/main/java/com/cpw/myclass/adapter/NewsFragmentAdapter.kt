@@ -8,11 +8,13 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.cpw.myclass.R
-import com.cpw.myclass.data.ClassmatesBean
+import com.cpw.myclass.data.ClassmatesType
+import com.cpw.myclass.data.MessageFragmentBean
+import com.cpw.myclass.util.CommonUtil
 
 class NewsFragmentAdapter() : RecyclerView.Adapter<NewsFragmentAdapter.ViewHolder>() {
     var listener: OnNewsItemClickListener? = null
-    var item = 10
+    private var data = ArrayList<MessageFragmentBean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -21,23 +23,39 @@ class NewsFragmentAdapter() : RecyclerView.Adapter<NewsFragmentAdapter.ViewHolde
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.newFromView.text = "杨明"
-        holder.fromTypeView.text = "班长"
-        holder.newsTimeView.text = "16:50"
-        holder.newsContentView.text = "快点写不然毕不了业了"
-        holder.newsNumView.text = "16"
+        holder.newFromView.text = data[position].from_name
+        holder.fromTypeView.text = ClassmatesType.getRoleString(data[position].from_role)
+        if (data[position].time.split(" ").size >= 4) {
+            var time = data[position].time
+            var times = time.split(" ")
+            time = times[4]
+            times = time.split(":")
+            holder.newsTimeView.text = "${times[0]}:${times[1]}"
+        }
+        holder.newsContentView.text = data[position].message
+        if (data[position].no_read.toInt() == 0) {
+            holder.newsNumView.visibility = View.INVISIBLE
+        } else {
+            holder.newsNumView.visibility = View.VISIBLE
+            holder.newsNumView.text = data[position].no_read
+        }
         holder.delete.setOnClickListener {
-            item--
+            CommonUtil.chatWithMe.remove(data[position].from_id)
+            data.removeAt(position)
             notifyDataSetChanged()
         }
         if (listener != null) {
             holder.item.setOnClickListener {
-                listener!!.onClick("杨明")
+                listener!!.onClick(data[position])
             }
         }
     }
 
-    override fun getItemCount(): Int = item
+    override fun getItemCount(): Int = data.size
+
+    fun setMessage(list: ArrayList<MessageFragmentBean>) {
+        data = list
+    }
 
     fun setNewsListener(listener: OnNewsItemClickListener) {
         this.listener = listener
@@ -54,6 +72,6 @@ class NewsFragmentAdapter() : RecyclerView.Adapter<NewsFragmentAdapter.ViewHolde
     }
 
     interface OnNewsItemClickListener{
-        fun onClick(name: String)
+        fun onClick(msg: MessageFragmentBean)
     }
 }

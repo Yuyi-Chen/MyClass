@@ -7,11 +7,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cpw.myclass.R
-import com.cpw.myclass.data.ClassmatesBean
 import com.cpw.myclass.data.ClassmatesType
+import com.cpw.myclass.data.UserBean
 
-class ClassmatesAdapter(private val values: List<ClassmatesBean>) : RecyclerView.Adapter<ClassmatesAdapter.ViewHolder>() {
+class ClassmatesAdapter() : RecyclerView.Adapter<ClassmatesAdapter.ViewHolder>() {
     var listener: OnClassmateItemClickListener? = null
+    private var data = ArrayList<UserBean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -20,23 +21,23 @@ class ClassmatesAdapter(private val values: List<ClassmatesBean>) : RecyclerView
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        if(position != 0 && item.firstLetter == values[position - 1].firstLetter) {
+        val item = data[position]
+        if(position != 0 && item.firstLetter == data[position - 1].firstLetter) {
             holder.codeViewContainer.visibility = View.GONE
         } else {
             holder.codeViewContainer.visibility = View.VISIBLE
         }
         holder.codeView.text = item.firstLetter.toString()
-        holder.nameView.text = item.name
-        holder.numberView.text = item.phone_number
-        holder.typeView.text = when(item.type) {
+        holder.nameView.text = item.user_name
+        holder.numberView.text = item.user_phone
+        holder.typeView.text = when(ClassmatesType.getClassmatesType(item.user_role)) {
             ClassmatesType.ClassTeacher -> "班主任"
             ClassmatesType.LeagueBranchSecretary -> "团支部书记"
             ClassmatesType.Monitor -> "班长"
-            ClassmatesType.Schoolmate -> "同学"
             ClassmatesType.SportsMonitor -> "文体委员"
             ClassmatesType.StudyMonitor -> "学习委员"
             ClassmatesType.ViceMonitor -> "副班长"
+            else -> "同学"
         }
         if (listener != null) {
             holder.item.setOnClickListener {
@@ -45,10 +46,14 @@ class ClassmatesAdapter(private val values: List<ClassmatesBean>) : RecyclerView
         }
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = data.size
 
     fun setClickListener(listener: OnClassmateItemClickListener) {
         this.listener = listener
+    }
+
+    fun setClassmates(list: ArrayList<UserBean>) {
+        data = list
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -61,6 +66,6 @@ class ClassmatesAdapter(private val values: List<ClassmatesBean>) : RecyclerView
     }
 
     interface OnClassmateItemClickListener{
-        fun onClick(classmate: ClassmatesBean)
+        fun onClick(classmate: UserBean)
     }
 }

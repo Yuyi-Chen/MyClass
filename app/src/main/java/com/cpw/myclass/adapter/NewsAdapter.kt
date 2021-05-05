@@ -25,9 +25,10 @@ class NewsAdapter() : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
         holder.news_time_container.visibility = View.GONE
         holder.receive_container.visibility = View.GONE
         holder.send_container.visibility = View.GONE
-        val formatter = SimpleDateFormat("HH:mm")
-        val nowHour = Date().hours
-        val nowMinutes = Date().minutes
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val nowTime = formatter.parse(data?.get(position)?.time)
+        val nowHour = nowTime.hours
+        val nowMinutes = nowTime.minutes
         if (position == 0) {
             holder.news_time_container.visibility = View.VISIBLE
             holder.news_time.text = data?.get(position)?.time

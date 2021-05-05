@@ -33,6 +33,7 @@
             android:textSize="25sp"
             android:text="杨明"/>
         <TextView
+            android:id="@+id/tv_user_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -40,7 +41,7 @@
             android:textSize="15sp"
             android:text="学号：20171001234" />
         <TextView
-            android:id="@+id/tv_login_time"
+            android:id="@+id/tv_user_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

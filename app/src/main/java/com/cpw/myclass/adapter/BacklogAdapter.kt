@@ -6,9 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cpw.myclass.R
+import com.cpw.myclass.data.NoticeBean
+import com.cpw.myclass.util.CommonUtil
 
 class BacklogAdapter() : RecyclerView.Adapter<BacklogAdapter.ViewHolder>() {
-    var listener: OnBacklogItemClickListener? = null
+    private var listener: OnBacklogItemClickListener? = null
+    private var data: ArrayList<NoticeBean> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -17,21 +20,32 @@ class BacklogAdapter() : RecyclerView.Adapter<BacklogAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.backlogTitleView.text = "通知"
-        holder.backlogContentView.text = "我快写完了啊啊啊啊啊 啊啊"
-        holder.backlogTimeView.text = "2021年4月22日 16:56 发布"
-        holder.isReadView.text = "未阅读"
+        holder.backlogTitleView.text = data[position].title
+        holder.backlogContentView.text = data[position].content
+        holder.backlogTimeView.text = data[position].create_time
+        val read = data[position].notice_read.split(",")
+        if (read.contains(CommonUtil.currentUser.user_id)) {
+            holder.isReadView.text = "已阅读"
+            holder.isReadView.setBackgroundResource(R.drawable.bg_read)
+        } else {
+            holder.isReadView.text = "未阅读"
+            holder.isReadView.setBackgroundResource(R.drawable.bg_not_read)
+        }
         if (listener != null) {
             holder.item.setOnClickListener {
-                listener!!.onClick()
+                listener!!.onClick(data[position])
             }
         }
     }
 
-    override fun getItemCount(): Int = 10
+    override fun getItemCount(): Int = data.size
 
     fun setClickListener(listener: OnBacklogItemClickListener) {
         this.listener = listener
+    }
+
+    fun setNotice(list: ArrayList<NoticeBean>) {
+        data = list
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -43,6 +57,6 @@ class BacklogAdapter() : RecyclerView.Adapter<BacklogAdapter.ViewHolder>() {
     }
 
     interface OnBacklogItemClickListener {
-        fun onClick()
+        fun onClick(notice: NoticeBean)
     }
 }
