@@ -46,7 +46,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation files('libs/pinyin4j-2.5.0.jar')
-    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+    implementation files('libs/SwipeDelMenuLayout-V1.3.0.aar')
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'

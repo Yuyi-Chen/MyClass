@@ -2,7 +2,7 @@ package com.cpw.myclass.http
 
 class RequestUrl {
     companion object {
-        val pre_url = "http://106.13.235.246:1234/user/"
+        val pre_url = "http://192.168.8.229:5000/user/"
         val login = pre_url + "login/"
         val getUserMessage = pre_url + "get_user/"
         val getQuestion = pre_url + "getquestion/"
